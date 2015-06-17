@@ -1,0 +1,21 @@
+Examples of all commands:
+java -classpath jpgman.jar jpgman.Main flatten c:\test2
+java -classpath jpgman.jar jpgman.Main thumballfirst c:\test2 25
+java -classpath jpgman.jar jpgman.Main thumballfirst c:\test2 c:\test2 25
+java -classpath jpgman.jar jpgman.Main thumbfirst c:\test2\0038 200
+java -classpath jpgman.jar jpgman.Main thumbfirst c:\test2\0038 c:\test2 300
+java -classpath jpgman.jar jpgman.Main thumbAll c:\test2 200
+java -classpath jpgman.jar jpgman.Main thumbAll c:\test2 c:\test2 300
+java -classpath jpgman.jar jpgman.Main thumb c:\test2\0038 200
+java -classpath jpgman.jar jpgman.Main thumb c:\test2\0038 c:\test2 300
+java -classpath jpgman.jar jpgman.Main renameflattenall c:\test2 c:\goo 3
+java -classpath jpgman.jar jpgman.Main renameflattenall c:\test3 4
+java -classpath jpgman.jar jpgman.Main renameflatten c:\test2\0038 c:\goo sucker 3
+java -classpath jpgman.jar jpgman.Main renameflatten c:\test2\0042 pooface 4
+java -classpath jpgman.jar jpgman.Main deleteSize c:\test2 110
+java -classpath jpgman.jar jpgman.Main writeHtmlAll c:\test2
+java -classpath jpgman.jar jpgman.Main writeHtml c:\test2\0061
+java -classpath jpgman.jar jpgman.Main deleteThumbs c:\test2\0061
+java -classpath jpgman.jar jpgman.Main deleteThumbsAll c:\test2
+
+*Tip* create a file with a .bat extension then copy and paste the commands, modify them so they do what you want and order them so you only have to run the bat file once. Then execute the bat file.

@@ -1,0 +1,12 @@
+REM java -classpath sequenceRipper.jar sequenceripper.Main Domain Username Password /directory/directory/filePrefix StartSequence EndSequence Digits Exstension
+REM Domain
+REM Username
+REM Password
+REM /directory/directory/filePrefix
+REM StartSequence
+REM EndSequence
+REM Digits
+REM Exstension
+REM
+REM example:
+REM java -classpath sequenceRipper.jar sequenceripper.Main http://agooface.com username password /directory/directory/filePrefix 1 92 3 .jpg

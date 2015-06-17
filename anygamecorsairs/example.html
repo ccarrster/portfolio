@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Anygame Corsairs</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<style>
+#draggable { width: 150px; height: 150px; padding: 0.5em; }
+</style>
+<script>
+$(function() {
+$( ".draggable" ).draggable();
+});
+</script>
+</head>
+<body>
+
+<div id="jquery-drag-to-select-example" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
+<div id="shuffle" style="position: absolute; top: 0; right: 0;" onclick="shuffle();"><img src="shuffle.png" width="70px" title="shuffle selection"></div>
+<div id="stack" style="position: absolute; top: 0; right: 70px;" onclick="stack();"><img src="stack.png" width="70px" title="stack selection"></div>
+<div id="flip" style="position: absolute; top: 0; right: 140px;" onclick="flipGroup();"><img src="flip.png" width="70px" title="flip selection"></div>
+<div id="select_div" style="position: absolute; border:1px dashed gray; top: 0; left: 0; width: 0; height: 0;"></div>
+<script language="javascript">
+var element = document.getElementById('jquery-drag-to-select-example');
+var startX = -1;
+var startY = -1;
+var cardSelected = false;
+var selectTop = 0;
+var selectHeight = 0;
+var selectLeft = 0;
+var selectWidth = 0;
+var elementCount = 100;
+	element.addEventListener("mousedown", function(e){
+	    flag = 0;
+	    startX = e.clientX;
+	    startY = e.clientY;
+	}, false);
+	element.addEventListener("mousemove", function(e){
+	    flag = 1;
+	    if(cardSelected == false && startX != -1 && startY != -1){
+			var endX = e.clientX;
+			var endY = e.clientY;
+			var selectDiv = document.getElementById("select_div");
+
+			if(startY < endY){
+				selectTop = startY;
+				selectHeight = endY - startY;
+			} else {
+				selectTop = endY;
+				selectHeight = startY - endY;
+			}
+
+			if(startX < endX){
+				selectLeft = startX;
+				selectWidth = endX - startX;
+			} else {
+				selectLeft = endX;
+				selectWidth = startX - endX;
+			}
+			selectDiv.style.top = selectTop + 'px';
+			selectDiv.style.height = selectHeight + 'px';
+			selectDiv.style.left = selectLeft + 'px';
+			selectDiv.style.width = selectWidth + 'px';
+		}
+	}, false);
+	element.addEventListener("mouseup", function(e){
+	    var selectDiv = document.getElementById("select_div");
+	    if(flag === 0){
+	        //console.log("click");
+	    }
+	    else if(flag === 1){
+	    	if(cardSelected == false){
+				for (var i=1;i<=elementCount;i++)
+				{
+					var cardDiv = document.getElementById(i);
+					var cardLeft = cardDiv.style.left;
+					var cardTop = cardDiv.style.top;
+					if(cardLeft.length != 0 && cardTop.length != 0){
+						cardLeft = cardLeft.substring(0, cardLeft.length - 2);
+						cardTop = cardTop.substring(0, cardTop.length - 2);
+						var cardHeight = 97;
+						var cardWidth = 73;
+						var cardBottom = parseInt(cardTop) + cardHeight;
+						var cardRight = parseInt(cardLeft) + cardWidth;
+						if(selectTop < cardTop && (selectTop + selectHeight) > cardBottom && selectLeft < cardLeft && (selectLeft + selectWidth) > cardRight){
+							cardDiv.style.borderColor = "blue";
+						}
+					}
+				}
+				selectDiv.style.top = '0px';
+				selectDiv.style.height = '0px';
+				selectDiv.style.left = '0px';
+				selectDiv.style.width = '0px';
+				selectTop = 0;
+				selectHeight = 0;
+				selectLeft = 0;
+				selectWidth = 0;
+			}
+	    }
+	    startX = -1;
+	    startY = -1;
+}, false);
+
+var zTop = 100;
+for (var i=1;i<=elementCount;i++)
+{
+	var cardTop = 20;
+	if(i >= 97){
+		cardTop = 260;
+	} else if(i > 66){
+		cardTop = 140;
+	}
+
+	var cardLeft = 20;
+	if(i == 98){
+		cardLeft = 60;
+	} else if(i == 99){
+		cardLeft = 100;
+	} else if(i == 100){
+		cardLeft = 140;
+	} else
+	var dblclick = ' ondblclick="flip(' + i + ')" ';
+	if(i > 66){
+		dblclick = ' ';
+	}
+	if(i >= 97){
+		dblclick = ' ondblclick="roll(' + i + ')" ';
+	}
+
+	document.write('<div id="' + i + '" ' + dblclick + ' style="border:1px solid red; position:absolute; top:' + cardTop + 'px; left:' + cardLeft + 'px; z-index:' + Math.floor((Math.random()*100)+1) + ';" class="draggable">');
+	var imageName = "cardback";
+	if(i == 67){
+		imageName = "galleyblack25";
+	} else if(i == 68){
+		imageName = "galleyblack27";
+	} else if(i == 69){
+		imageName = "galleyblack47";
+	} else if(i == 70){
+		imageName = "galleyblack58";
+	} else if(i == 71){
+		imageName = "galleyblack712";
+	} else if(i == 72){
+		imageName = "galleyblack811";
+	} else if(i == 73){
+		imageName = "galleyblue68";
+	} else if(i == 74){
+		imageName = "galleyblue48";
+	} else if(i == 75){
+		imageName = "galleyblue67";
+	} else if(i == 76){
+		imageName = "galleyblue813";
+	} else if(i == 77){
+		imageName = "galleyblue37";
+	} else if(i == 78){
+		imageName = "galleyblue35";
+	} else if(i == 79){
+		imageName = "galleyorange713";
+	} else if(i == 80){
+		imageName = "galleyorange76";
+	} else if(i == 81){
+		imageName = "galleyorange58";
+	} else if(i == 82){
+		imageName = "galleyorange59";
+	} else if(i == 83){
+		imageName = "galleyorange67";
+	} else if(i == 84){
+		imageName = "galleyorange25";
+	} else if(i == 85){
+		imageName = "galleyteal310";
+	} else if(i == 86){
+		imageName = "galleyteal46";
+	} else if(i == 87){
+		imageName = "galleyteal462";
+	} else if(i == 88){
+		imageName = "galleyteal812";
+	} else if(i == 89){
+		imageName = "galleyteal810";
+	} else if(i == 90){
+		imageName = "galleyteal67";
+	} else if(i == 91){
+		imageName = "galleypurple25";
+	} else if(i == 92){
+		imageName = "galleypurple36";
+	} else if(i == 93){
+		imageName = "galleypurple47";
+	} else if(i == 94){
+		imageName = "galleypurple69";
+	} else if(i == 95){
+		imageName = "galleypurple79";
+	} else if(i == 96){
+		imageName = "galleypurple811";
+	} else if(i == 97){
+		imageName = "dice1";
+	} else if(i == 98){
+		imageName = "dice1";
+	} else if(i == 99){
+		imageName = "dicegreen";
+	} else if(i == 100){
+		imageName = "dicegreen";
+	}
+		document.write('<img src="' + imageName + '.png"/>');
+	document.write('</div>');
+
+	var flag = 0;
+	var element = document.getElementById(i);
+	var cardStartX = -1;
+	var cardStartY = -1;
+	var previousZIndex = 0;
+	element.addEventListener("mousedown", function(e){
+		cardStartX = e.clientX;
+	    cardStartY = e.clientY;
+	    previousZIndex = this.style.zIndex;
+	    this.style.zIndex = zTop++;
+	    flag = 0;
+	    cardSelected = true;
+	}, false);
+	element.addEventListener("mousemove", function(){
+	    flag = 1;
+	}, false);
+	element.addEventListener("mouseup", function(e){
+	    if(flag === 0){
+	        if(this.style.borderColor == "blue"){
+	        	this.style.borderColor = "red";
+	        } else {
+	        	this.style.borderColor = "blue";
+	        }
+	    }
+	    else if(flag === 1){
+	    	if(this.style.borderColor == "blue"){
+				var cardEndX = e.clientX;
+				var cardEndY = e.clientY;
+				var deltaX = cardEndX - cardStartX;
+				var deltaY = cardEndY - cardStartY;
+				var startZTop = zTop;
+				for (var i=1;i<=elementCount;i++)
+				{
+					var cardDiv = document.getElementById(i);
+					var cardLeft = cardDiv.style.left;
+					var cardTop = cardDiv.style.top;
+					if(cardLeft.length != 0 && cardTop.length != 0){
+						cardLeft = cardLeft.substring(0, cardLeft.length - 2);
+						cardTop = cardTop.substring(0, cardTop.length - 2);
+						if(cardDiv.style.borderColor == "blue"){
+							if(cardDiv.id != this.id){
+								var newLeft = (parseInt(cardLeft) + deltaX);
+								var newTop = (parseInt(cardTop) + deltaY);
+								if(newLeft > 0 && newTop > 0){
+									cardDiv.style.left = newLeft + "px";
+									cardDiv.style.top = newTop + "px";
+									cardDiv.style.zIndex = parseInt(cardDiv.style.zIndex) + startZTop;
+									if(cardDiv.style.zIndex > zTop){
+										zTop = parseInt(cardDiv.style.zIndex) + 1;
+									}
+								}
+							}
+							cardDiv.style.borderColor = "red";
+						}
+					}
+				}
+				this.style.zIndex = parseInt(previousZIndex) + startZTop;
+				if(this.style.zIndex > zTop){
+					zTop = parseInt(this.style.zIndex) + 1;
+				}
+			}
+
+			var cardLeft = this.style.left;
+			var cardTop = this.style.top;
+			cardLeft = cardLeft.substring(0, cardLeft.length - 2);
+			cardTop = cardTop.substring(0, cardTop.length - 2);
+			if(cardLeft < 0){
+				this.style.left = 0;
+			}
+			if(cardTop < 0){
+				this.style.top = 0;
+			}
+	    }
+	    cardSelected = false;
+	    cardStartX = -1;
+	    cardStartY = -1;
+}, false);
+}
+
+function flip(divId){
+	var cardDiv = document.getElementById(divId);
+	if(cardDiv.innerHTML.indexOf('back') != -1){
+		var imageName = null;
+		if(divId <= 7){
+			imageName = "cardmeat";
+		} else if(divId == 8){
+			imageName = "cardmeatcorsair";
+		} else if(divId <= 14){
+			imageName = "cardfruit";
+		} else if(divId == 15){
+			imageName = "cardfruitcorsair";
+		} else if(divId <= 23){
+			imageName = "cardveg";
+		} else if(divId <= 25){
+			imageName = "cardvegcorsair";
+		} else if(divId <= 33){
+			imageName = "cardbread";
+		} else if(divId <= 35){
+			imageName = "cardbreadcorsair";
+		} else if(divId <= 45){
+			imageName = "cardwater";
+		} else if(divId <= 48){
+			imageName = "cardwatercorsair";
+		} else if(divId <= 55){
+			imageName = "cardrum";
+		} else if(divId == 56){
+			imageName = "cardrumcorsair";
+		} else if(divId <= 59){
+			imageName = "cardcorsairs4";
+		} else if(divId <= 62){
+			imageName = "cardcorsairs3";
+		} else if(divId <= 66){
+			imageName = "cardcorsairs2";
+		}
+		cardDiv.innerHTML = '<img src="' + imageName + '.png"/>';
+	} else {
+		cardDiv.innerHTML = '<img src="cardback.png"/>';
+	}
+}
+
+function moveTop(divId){
+	var cardDiv = document.getElementById(divId);
+	cardDiv.style.zIndex = zTop++;
+}
+
+function shuffle(){
+	var startZTop = zTop;
+	for (var i=1;i<=elementCount;i++)
+	{
+		var cardDiv = document.getElementById(i);
+		if(cardDiv.style.borderColor == "blue"){
+			cardDiv.style.zIndex = Math.floor((Math.random()*100)+1) + startZTop;
+			cardDiv.style.borderColor = "red";
+		}
+		zTop = zTop + 100;
+	}
+}
+
+function stack(){
+	var stackCardLeft = null;
+	var stackCardTop = null;
+	for (var i=1;i<=elementCount;i++)
+	{
+		var cardDiv = document.getElementById(i);
+		if(cardDiv.style.borderColor == "blue"){
+			if(stackCardLeft == null && stackCardTop == null){
+				stackCardLeft = cardDiv.style.left;
+				stackCardTop = cardDiv.style.top;
+			} else {
+				cardDiv.style.left = stackCardLeft;
+				cardDiv.style.top = stackCardTop;
+			}
+			cardDiv.style.borderColor = "red";
+		}
+		zTop = zTop + 100;
+	}
+}
+
+function flipGroup(){
+	for (var i=1;i<=elementCount;i++)
+	{
+		var cardDiv = document.getElementById(i);
+		if(cardDiv.style.borderColor == "blue"){
+			if(i <= 66){
+				flip(i);
+			}
+			cardDiv.style.borderColor = "red";
+		}
+	}
+}
+
+function roll(divId){
+	var dice = document.getElementById(divId);
+	var diceRandom = Math.floor((Math.random()*6)+1);
+	if(divId == 97 || divId == 98){
+		if(diceRandom == 1){
+			dice.innerHTML = '<img src="dice1.png"/>';
+		} else if(diceRandom == 2){
+			dice.innerHTML = '<img src="dice2.png"/>';
+		} else if(diceRandom == 3){
+			dice.innerHTML = '<img src="dice3.png"/>';
+		} else if(diceRandom == 4){
+			dice.innerHTML = '<img src="dice4.png"/>';
+		} else if(diceRandom == 5){
+			dice.innerHTML = '<img src="dice5.png"/>';
+		} else if(diceRandom == 6){
+			dice.innerHTML = '<img src="dice6.png"/>';
+		}
+ 	} else if(divId == 99 || divId == 100){
+		if(diceRandom == 1){
+			dice.innerHTML = '<img src="dicegreen.png"/>';
+		} else if(diceRandom == 2){
+			dice.innerHTML = '<img src="dicered.png"/>';
+		} else if(diceRandom == 3){
+			dice.innerHTML = '<img src="diceblue.png"/>';
+		} else if(diceRandom == 4){
+			dice.innerHTML = '<img src="diceyellow.png"/>';
+		} else if(diceRandom == 5){
+			dice.innerHTML = '<img src="dicewhite.png"/>';
+		} else if(diceRandom == 6){
+			dice.innerHTML = '<img src="diceblack.png"/>';
+		}
+	}
+}
+
+//TODO make an icon and button for this
+function rollGroup(){
+	for (var i=1;i<=elementCount;i++)
+	{
+		var cardDiv = document.getElementById(i);
+		if(cardDiv.style.borderColor == "blue"){
+			if(i <= 97){
+				roll(i);
+			}
+			cardDiv.style.borderColor = "red";
+		}
+	}
+}
+
+
+</script>
+</div>
+</body>
+</html>

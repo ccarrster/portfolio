@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<TITLE>
+</TITLE>
+</HEAD>
+
+
+
+<!--top.right-->
+
+<BODY>
+<H2>Cc:NBA</H2>
+<FORM TARGET="right" >
+
+<INPUT TYPE="text" NAME="first" SIZE="20" MAXLENGTH="200"> prefix<BR>
+<INPUT TYPE="text" NAME="number" SIZE="4" MAXLENGTH="10"> number<BR>
+<INPUT TYPE="text" NAME="end" SIZE="7" MAXLENGTH="20"> tail<BR>
+<INPUT TYPE="radio" NAME="zeros" VALUE="1" CHECKED> NA
+<INPUT TYPE="radio" NAME="zeros" VALUE="2"> <INPUT TYPE="text" NAME="digits" SIZE="3" MAXLENGTH="20" VALUE="3"><BR> Digits<BR>
+<INPUT TYPE="text" NAME="time" SIZE="7" MAXLENGTH="20" VALUE="50"> deciseconds<BR>
+<INPUT TYPE="text" NAME="min" SIZE="7" MAXLENGTH="20" VALUE=""> min<BR>
+<INPUT TYPE="text" NAME="max" SIZE="7" MAXLENGTH="20" VALUE=""> max<BR>
+
+
+<Script LANGUAGE="JavaScript">
+
+
+
+
+var ZEROINSERT = "";
+var finalurl = "";
+var theForm;
+var stop = false;
+var stopB = false;
+
+function Refresh(form) {
+	if (parseInt(form.min.value) <= parseInt(form.number.value) && parseInt(form.max.value) >= parseInt(form.number.value)|| form.min.value == "" && parseInt(form.max.value) >= parseInt(form.number.value) || form.max.value == "" && parseInt(form.min.value) <= parseInt(form.number.value)||form.min.value == "" && form.max.value == "") {
+
+		var ZEROINSERT = "";
+		if (form.zeros[1].checked){
+			SameTemp = form.number.value;
+			X = 1;
+			for (n = 0; n < parseInt(form.digits.value); X = X * 10, n++){
+				if ((SameTemp < X * 10 ) && (SameTemp >= X)){
+					for (l = 0; l < parseInt(form.digits.value) - n -1; l++){
+						ZEROINSERT = ZEROINSERT + "0";
+					}
+				}
+			}
+		}
+
+		finalurl = form.first.value + ZEROINSERT + form.number.value + form.end.value;
+		open(finalurl, "right")
+
+		if (form.min.value == form.number.value && stopB == false){
+			Stop();
+		}
+		if (form.max.value == form.number.value && stop == false) {
+			Stop();
+		}
+	} else {
+		Stop();
+	}
+}
+
+
+function Minus(form) {
+var MinusTemp = eval(form.number.value - form.byAmmount.value);
+form.number.value = MinusTemp;
+
+Refresh(form);
+}
+
+
+function Plus(form) {
+PlusNumTemp = parseInt(form.number.value,10);
+ByAmmountTemp = parseInt(form.byAmmount.value);
+PlusTemp = eval(ByAmmountTemp + PlusNumTemp);
+form.number.value = PlusTemp;
+
+Refresh(form);
+}
+
+function Slide2(){
+if (stop == false){
+	Slide(theForm);
+}
+}
+
+function Slide(form) {
+stopB = true;
+stop = false;
+Plus(form);
+theForm = form;
+setTimeout("Slide2()", form.time.value * 100);
+}
+
+function Slide2B(){
+if (stopB == false){
+	SlideB(theForm);
+}
+}
+
+function SlideB(form) {
+stop = true;
+stopB = false;
+Minus(form);
+theForm = form;
+setTimeout("Slide2B()", form.time.value * 100);
+}
+
+function Stop(){
+stop = true;
+stopB = true;
+}
+
+</Script>
+
+
+
+<INPUT TYPE="button" VALUE="Minus" onClick="Minus(this.form);">
+<INPUT TYPE="button" VALUE="Re" onClick="Refresh(this.form);">
+<INPUT TYPE="button" VALUE="Plus" onClick="Plus(this.form);">
+<INPUT TYPE="button" VALUE="Slide =>" onClick="Slide(this.form);">
+<INPUT TYPE="button" VALUE="Slide <=" onClick="SlideB(this.form);">
+<INPUT TYPE="button" VALUE="Stop" onClick="Stop();"><BR>
+<INPUT TYPE="text" NAME="byAmmount" SIZE="5" MAXLENGTH="20" VALUE="1"> N<BR>
+</FORM>
+<A HREF="info.html" TARGET="right">Cc:NBA info</A>
+</BODY>
+</HTML>
